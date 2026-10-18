@@ -30,8 +30,30 @@ jobs:
       - name: Test transaction logic with Windows operations mocked
         shell: powershell
         run: powershell.exe -NoProfile -NonInteractive -ExecutionPolicy RemoteSigned -File tests/native.test.ps1
-      - name: Package Windows installer and ZIP
-        run: npx electron-builder --win nsis zip --x64
+      - name: Package Windows ZIP
+        shell: pwsh
+        run: |
+          npx electron-builder --win zip --x64 --publish never 2>&1 | Tee-Object -FilePath packaging.log
+          $packageExit = $LASTEXITCODE
+          if ($packageExit -ne 0) {
+            $details = (Get-Content packaging.log -Tail 45) -join "`n"
+            $details = $details.Replace('%', '%25').Replace("`r", '%0D').Replace("`n", '%0A')
+            Write-Output "::error title=Windows ZIP packaging failed::$details"
+            exit $packageExit
+          }
+      - name: Package optional Windows installer
+        continue-on-error: true
+        shell: pwsh
+        run: |
+          npx electron-builder --win nsis --x64 --publish never 2>&1 | Tee-Object -FilePath installer.log
+          $installerExit = $LASTEXITCODE
+          if ($installerExit -ne 0) {
+            Get-ChildItem release -Filter '*Setup*.exe' -File -ErrorAction SilentlyContinue | Remove-Item
+            $details = (Get-Content installer.log -Tail 30) -join "`n"
+            $details = $details.Replace('%', '%25').Replace("`r", '%0D').Replace("`n", '%0A')
+            Write-Output "::warning title=Optional installer unavailable; ZIP remains usable::$details"
+            exit $installerExit
+          }
       - name: Create SHA-256 checksums
         shell: pwsh
         run: |
@@ -75,8 +97,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          gh release create "$RELEASE_TAG" \
-            release/*.exe release/*.zip release/SHA256SUMS.txt \
+          shopt -s nullglob
+          files=(release/*.exe release/*.zip release/SHA256SUMS.txt)
+          gh release create "$RELEASE_TAG" "${files[@]}" \
             --verify-tag \
             --title "Frameforge $RELEASE_TAG" \
             --prerelease \
