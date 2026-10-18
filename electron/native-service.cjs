@@ -3,6 +3,7 @@
 const { spawn } = require("node:child_process");
 const path = require("node:path");
 const { validateRequest, MUTATION_ACTIONS } = require("./validation.cjs");
+const { stageBundledScript } = require("./script-staging.cjs");
 
 class NativeService {
   constructor({
@@ -83,6 +84,20 @@ class NativeService {
 
   invoke(request) {
     return new Promise((resolve, reject) => {
+      // Byte-stage only our bundled helper. ZIP Internet-zone metadata must not
+      // turn into an unsigned remote-script dependency. RemoteSigned and any
+      // stronger machine policy remain in effect for the new local helper.
+      let staged;
+      try {
+        staged = stageBundledScript(this.scriptPath, this.dataDir);
+      } catch (error) {
+        reject(
+          new Error(
+            `Cannot prepare the bundled Windows helper: ${error.message}`,
+          ),
+        );
+        return;
+      }
       // Use the built-in, absolute executable; never resolve an executable from renderer input or PATH.
       const executable = path.win32.join(
         process.env.SystemRoot || "C:\\Windows",
@@ -91,23 +106,39 @@ class NativeService {
         "v1.0",
         "powershell.exe",
       );
-      const child = spawn(
-        executable,
-        [
-          "-NoLogo",
-          "-NoProfile",
-          "-NonInteractive",
-          "-ExecutionPolicy",
-          "RemoteSigned",
-          "-File",
-          this.scriptPath,
-        ],
-        {
-          windowsHide: true,
-          stdio: ["pipe", "pipe", "pipe"],
-          env: process.env,
-        },
-      );
+      let child;
+      try {
+        child = spawn(
+          executable,
+          [
+            "-NoLogo",
+            "-NoProfile",
+            "-NonInteractive",
+            "-ExecutionPolicy",
+            "RemoteSigned",
+            "-File",
+            staged.scriptPath,
+          ],
+          {
+            windowsHide: true,
+            stdio: ["pipe", "pipe", "pipe"],
+            env: process.env,
+          },
+        );
+      } catch (error) {
+        staged.cleanup();
+        reject(error);
+        return;
+      }
+      // Close follows process exit or a spawn error; release the helper only
+      // once PowerShell has closed its file handles.
+      child.once("close", () => {
+        try {
+          staged.cleanup();
+        } catch {
+          /* A locked local helper can be removed later. */
+        }
+      });
       let stdout = "",
         stderr = "",
         settled = false;

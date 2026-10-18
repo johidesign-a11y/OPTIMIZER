@@ -1,3 +1,4 @@
+import { version as APP_VERSION } from "../../package.json";
 import catalog from "../../shared/catalog.json";
 
 type Bridge = Record<string, (...args: any[]) => any>;
@@ -24,7 +25,7 @@ const initialState = {
   restoreAvailable: false,
   appliedIds: [],
   history: [],
-  version: "1.0.0",
+  version: APP_VERSION,
 };
 
 function historyEntries(entries: any[]) {
@@ -94,7 +95,7 @@ export const api = {
     const result = await call("getState");
     return {
       ...result,
-      version: "1.0.0",
+      version: APP_VERSION,
       history: historyEntries(result.history),
       appliedIds: result.appliedIds || [],
     };

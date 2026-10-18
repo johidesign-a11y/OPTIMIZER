@@ -30,6 +30,8 @@ jobs:
       - name: Test transaction logic with Windows operations mocked
         shell: powershell
         run: powershell.exe -NoProfile -NonInteractive -ExecutionPolicy RemoteSigned -File tests/native.test.ps1
+      - name: Test downloaded-script handling and read-only Windows bridge
+        run: node scripts/test-windows-bridge.cjs
       - name: Package Windows ZIP
         shell: pwsh
         run: |

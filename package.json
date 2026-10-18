@@ -1,6 +1,6 @@
 {
   "name": "frameforge",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "private": true,
   "description": "A reversible Windows gaming optimizer with hardware scanning, cleanup, and CS2 profiles.",
   "author": "Frameforge",
