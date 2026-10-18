@@ -2,6 +2,12 @@
 
 A free, local Windows gaming optimizer built for an **Intel Core i5-14600, NVIDIA RTX 3060, and 32 GB RAM**, with a dedicated Counter-Strike 2 workflow. The target build is a profile, not fabricated scanner output.
 
+## Download the Windows app
+
+Open [Frameforge downloads on GitHub Releases](https://github.com/johidesign-a11y/OPTIMIZER/releases), choose the newest published release, and download **Frameforge-1.0.0-win.zip** from **Assets**. Right-click the downloaded ZIP in Windows, choose **Extract All**, open the extracted folder, and double-click **Frameforge.exe**. Keep the other extracted files with the executable. If an installer ending in **Setup.1.0.0.exe** is also listed, it can be installed directly instead.
+
+The ZIP contains the complete Windows application. Source-code archives are for development; the ready-to-open app is the separately listed Windows ZIP. After applying approved settings, close Frameforge before playing. Changes remain saved; follow any sign-out/restart markers shown by the selected settings.
+
 ## What works
 
 - **59 individually selectable settings** with descriptions, restart requirements, and trade-offs: Game Mode/capture, mouse and keyboard preferences, desktop effects, optional Windows background features, privacy preferences, update peer sharing, and optional AC power tuning.
