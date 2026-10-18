@@ -1,0 +1,83 @@
+name: Windows downloads
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: package-lock.json
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Build renderer
+        run: npm run build
+      - name: Test catalog and request guards
+        run: npm test
+      - name: Test transaction logic with Windows operations mocked
+        shell: powershell
+        run: powershell.exe -NoProfile -NonInteractive -ExecutionPolicy RemoteSigned -File tests/native.test.ps1
+      - name: Package Windows installer and ZIP
+        run: npx electron-builder --win nsis zip --x64
+      - name: Create SHA-256 checksums
+        shell: pwsh
+        run: |
+          Get-ChildItem release -File |
+            Where-Object { $_.Extension -in '.exe', '.zip' } |
+            ForEach-Object {
+              $hash = (Get-FileHash -Algorithm SHA256 -LiteralPath $_.FullName).Hash.ToLowerInvariant()
+              "$hash  $($_.Name)"
+            } | Set-Content -Encoding utf8 release/SHA256SUMS.txt
+      - name: Save downloadable Windows files
+        uses: actions/upload-artifact@v4
+        with:
+          name: Frameforge-Windows-x64
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 0
+          path: |
+            release/*.exe
+            release/*.zip
+            release/SHA256SUMS.txt
+
+  publish:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out release notes
+        uses: actions/checkout@v4
+      - name: Download tested Windows files
+        uses: actions/download-artifact@v4
+        with:
+          name: Frameforge-Windows-x64
+          path: release
+      - name: Publish download page
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh release create "$RELEASE_TAG" \
+            release/*.exe release/*.zip release/SHA256SUMS.txt \
+            --verify-tag \
+            --title "Frameforge $RELEASE_TAG" \
+            --prerelease \
+            --notes-file RELEASE_NOTES.md

@@ -1,0 +1,76 @@
+{
+  "name": "frameforge",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A reversible Windows gaming optimizer with hardware scanning, cleanup, and CS2 profiles.",
+  "author": "Frameforge",
+  "license": "MIT",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "desktop": "npm run build && electron .",
+    "desktop:dev": "concurrently -k \"vite --host 127.0.0.1\" \"wait-on http://127.0.0.1:5173 && electron . --dev\"",
+    "dist:win": "npm run build && electron-builder --win nsis --x64",
+    "dist:win:zip": "npm run build && electron-builder --win zip --x64",
+    "test": "node --test tests/*.test.cjs",
+    "test:ui": "node scripts/test-ui.mjs",
+    "format": "prettier --write src electron scripts tests/*.cjs shared/catalog.json package.json tsconfig.json vite.config.ts index.html README.md"
+  },
+  "dependencies": {
+    "@fontsource-variable/dm-sans": "^5.3.0",
+    "@fontsource-variable/space-grotesk": "^5.3.0",
+    "lucide-react": "^0.468.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^5.1.0",
+    "concurrently": "^9.2.0",
+    "electron": "^44.9.0",
+    "electron-builder": "^26.0.0",
+    "playwright-core": "^1.56.0",
+    "prettier": "^3.9.10",
+    "typescript": "^5.9.0",
+    "vite": "^7.2.0",
+    "wait-on": "^9.0.0"
+  },
+  "build": {
+    "appId": "com.frameforge.optimizer",
+    "productName": "Frameforge",
+    "asar": true,
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "shared/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "native",
+        "to": "native",
+        "filter": [
+          "*.ps1"
+        ]
+      }
+    ],
+    "win": {
+      "target": "nsis",
+      "requestedExecutionLevel": "asInvoker",
+      "signAndEditExecutable": false,
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "perMachine": false
+    }
+  }
+}

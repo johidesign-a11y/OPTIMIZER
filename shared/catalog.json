@@ -1,0 +1,1333 @@
+{
+  "tweaks": [
+    {
+      "id": "game-mode",
+      "title": "Enable Windows Game Mode",
+      "description": "Let Windows recognize games and prioritize the gaming workload. Results depend on the Windows build and competing applications.",
+      "category": "gaming",
+      "risk": "low",
+      "recommended": true,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\GameBar",
+          "name": "AutoGameModeEnabled",
+          "type": "DWord",
+          "value": 1
+        }
+      ],
+      "caveat": "Does not set game process priority or guarantee more FPS. Restart a running game after changing this."
+    },
+    {
+      "id": "game-capture",
+      "title": "Disable Windows game recording",
+      "description": "Disable Windows Game DVR capture and its recording component to avoid optional capture work while playing.",
+      "category": "gaming",
+      "risk": "low",
+      "recommended": true,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\GameDVR",
+          "name": "AppCaptureEnabled",
+          "type": "DWord",
+          "value": 0
+        },
+        {
+          "path": "HKCU:\\System\\GameConfigStore",
+          "name": "GameDVR_Enabled",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "Windows Game Bar clips and capture are unavailable. OBS and NVIDIA recording have separate settings."
+    },
+    {
+      "id": "controller-gamebar",
+      "title": "Stop controller button opening Game Bar",
+      "description": "Prevent the Xbox/controller button from opening the Game Bar overlay during a session.",
+      "category": "gaming",
+      "risk": "low",
+      "recommended": true,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\GameBar",
+          "name": "UseNexusForGameBarEnabled",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "Only changes the controller shortcut. Other overlays are unaffected."
+    },
+    {
+      "id": "mouse-acceleration",
+      "title": "Disable pointer acceleration",
+      "description": "Use a consistent Windows pointer response by turning off Enhance pointer precision and its acceleration thresholds.",
+      "category": "input",
+      "risk": "low",
+      "recommended": true,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Control Panel\\Mouse",
+          "name": "MouseSpeed",
+          "type": "String",
+          "value": "0"
+        },
+        {
+          "path": "HKCU:\\Control Panel\\Mouse",
+          "name": "MouseThreshold1",
+          "type": "String",
+          "value": "0"
+        },
+        {
+          "path": "HKCU:\\Control Panel\\Mouse",
+          "name": "MouseThreshold2",
+          "type": "String",
+          "value": "0"
+        }
+      ],
+      "caveat": "CS2 uses raw mouse input, so this mainly affects the desktop and games that use the Windows pointer. It does not change mouse polling rate."
+    },
+    {
+      "id": "mouse-trails",
+      "title": "Disable mouse pointer trails",
+      "description": "Remove the trailing pointer effect for a cleaner cursor image on the desktop.",
+      "category": "input",
+      "risk": "low",
+      "recommended": true,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Control Panel\\Mouse",
+          "name": "MouseTrails",
+          "type": "String",
+          "value": "0"
+        }
+      ],
+      "caveat": "A visual preference; does not reduce USB or game input latency."
+    },
+    {
+      "id": "pointer-sonar",
+      "title": "Disable Ctrl pointer locator",
+      "description": "Stop Windows drawing a locator ring when you press Ctrl.",
+      "category": "input",
+      "risk": "low",
+      "recommended": true,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Control Panel\\Mouse",
+          "name": "MouseSonar",
+          "type": "String",
+          "value": "0"
+        }
+      ],
+      "caveat": "May remove a useful accessibility aid. It does not change raw game input."
+    },
+    {
+      "id": "pointer-snap",
+      "title": "Disable automatic pointer snapping",
+      "description": "Keep Windows from automatically moving the cursor to the default button in dialogs.",
+      "category": "input",
+      "risk": "low",
+      "recommended": true,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Control Panel\\Mouse",
+          "name": "SnapToDefaultButton",
+          "type": "String",
+          "value": "0"
+        }
+      ],
+      "caveat": "Affects Windows dialogs rather than CS2 mouse movement."
+    },
+    {
+      "id": "pointer-visible",
+      "title": "Keep pointer visible while typing",
+      "description": "Disable the Windows preference that temporarily hides the pointer while you type.",
+      "category": "input",
+      "risk": "low",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Control Panel\\Mouse",
+          "name": "MouseVanish",
+          "type": "String",
+          "value": "0"
+        }
+      ],
+      "caveat": "A cursor visibility preference only; games may draw their own cursor."
+    },
+    {
+      "id": "sticky-keys",
+      "title": "Disable Sticky Keys and its shortcut",
+      "description": "Turn off Sticky Keys and the repeated-Shift shortcut so it cannot interrupt a game.",
+      "category": "input",
+      "risk": "moderate",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Control Panel\\Accessibility\\StickyKeys",
+          "name": "Flags",
+          "type": "String",
+          "value": "506"
+        }
+      ],
+      "caveat": "Disables an accessibility feature. Leave unchanged if you rely on latched modifier keys."
+    },
+    {
+      "id": "filter-keys",
+      "title": "Disable Filter Keys and its shortcut",
+      "description": "Turn off Filter Keys and its shortcut so Windows does not intentionally ignore short or repeated keystrokes.",
+      "category": "input",
+      "risk": "moderate",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Control Panel\\Accessibility\\Keyboard Response",
+          "name": "Flags",
+          "type": "String",
+          "value": "122"
+        }
+      ],
+      "caveat": "Disables an accessibility feature. Normal keyboards already process keys without Filter Keys delay."
+    },
+    {
+      "id": "toggle-keys",
+      "title": "Disable Toggle Keys shortcut",
+      "description": "Disable Toggle Keys and its held-Num-Lock shortcut to prevent accidental lock-key sound prompts.",
+      "category": "input",
+      "risk": "moderate",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Control Panel\\Accessibility\\ToggleKeys",
+          "name": "Flags",
+          "type": "String",
+          "value": "58"
+        }
+      ],
+      "caveat": "Removes lock-key accessibility sounds. No reduction in game input latency is promised."
+    },
+    {
+      "id": "keyboard-repeat",
+      "title": "Use fast Windows key repeat",
+      "description": "Set the shortest initial repeat delay and fastest repeat rate for Windows text controls and menus.",
+      "category": "input",
+      "risk": "low",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Control Panel\\Keyboard",
+          "name": "KeyboardDelay",
+          "type": "String",
+          "value": "0"
+        },
+        {
+          "path": "HKCU:\\Control Panel\\Keyboard",
+          "name": "KeyboardSpeed",
+          "type": "String",
+          "value": "31"
+        }
+      ],
+      "caveat": "Does not accelerate the first keypress, hardware scan rate or CS2 movement input. Text may repeat more easily."
+    },
+    {
+      "id": "typing-insights",
+      "title": "Disable typing statistics",
+      "description": "Stop Windows collecting typing insights for supported keyboard suggestions.",
+      "category": "input",
+      "risk": "low",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Input\\TypingInsights",
+          "name": "InsightsEnabled",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "A privacy preference with little expected performance effect. Does not modify keyboard drivers."
+    },
+    {
+      "id": "hardware-prediction",
+      "title": "Disable hardware keyboard predictions",
+      "description": "Turn off Windows text predictions for a physical keyboard in supported text fields.",
+      "category": "input",
+      "risk": "low",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Input\\Settings",
+          "name": "EnableHwkbTextPrediction",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "Affects typing suggestions rather than raw game input."
+    },
+    {
+      "id": "transparency",
+      "title": "Disable desktop transparency",
+      "description": "Use opaque Windows surfaces instead of optional transparency effects.",
+      "category": "graphics",
+      "risk": "low",
+      "recommended": true,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize",
+          "name": "EnableTransparency",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "May lighten desktop composition. It is not an NVIDIA graphics setting or a guaranteed in-game FPS gain."
+    },
+    {
+      "id": "window-animation",
+      "title": "Disable minimize and maximize animations",
+      "description": "Make supported desktop window transitions immediate instead of animated.",
+      "category": "graphics",
+      "risk": "low",
+      "recommended": true,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Control Panel\\Desktop\\WindowMetrics",
+          "name": "MinAnimate",
+          "type": "String",
+          "value": "0"
+        }
+      ],
+      "caveat": "Improves the feel of desktop window switching; does not change game frame pacing."
+    },
+    {
+      "id": "taskbar-animation",
+      "title": "Disable taskbar animations",
+      "description": "Remove optional taskbar button animation effects.",
+      "category": "graphics",
+      "risk": "low",
+      "recommended": true,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+          "name": "TaskbarAnimations",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "A desktop visual preference. Windows versions may show fewer affected animations."
+    },
+    {
+      "id": "window-drag",
+      "title": "Use window outlines while dragging",
+      "description": "Show an outline while moving windows rather than repeatedly drawing the whole window contents.",
+      "category": "graphics",
+      "risk": "low",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Control Panel\\Desktop",
+          "name": "DragFullWindows",
+          "type": "String",
+          "value": "0"
+        }
+      ],
+      "caveat": "Changes desktop dragging behavior and does not affect an already running fullscreen game."
+    },
+    {
+      "id": "selection-effect",
+      "title": "Use simple selection rectangles",
+      "description": "Disable translucent Explorer selection rectangles in supported views.",
+      "category": "graphics",
+      "risk": "low",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+          "name": "ListviewAlphaSelect",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "A small Explorer visual preference with no expected CS2 FPS benefit."
+    },
+    {
+      "id": "icon-shadows",
+      "title": "Disable desktop icon label shadows",
+      "description": "Remove the shadow effect behind desktop icon text.",
+      "category": "graphics",
+      "risk": "low",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+          "name": "ListviewShadow",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "Can make labels harder to read against some wallpapers. Does not change game rendering."
+    },
+    {
+      "id": "desktop-peek",
+      "title": "Disable Aero Peek",
+      "description": "Stop Windows temporarily previewing the desktop through transparent application windows.",
+      "category": "graphics",
+      "risk": "low",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows\\DWM",
+          "name": "EnableAeroPeek",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "Affects desktop preview behavior. Does not disable the Desktop Window Manager."
+    },
+    {
+      "id": "menu-delay",
+      "title": "Reduce Windows menu opening delay",
+      "description": "Set the Windows menu hover delay to 100 ms for quicker supported desktop menus.",
+      "category": "graphics",
+      "risk": "low",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Control Panel\\Desktop",
+          "name": "MenuShowDelay",
+          "type": "String",
+          "value": "100"
+        }
+      ],
+      "caveat": "Changes menu interaction only; it does not reduce click-to-photon latency in games."
+    },
+    {
+      "id": "app-notifications",
+      "title": "Mute Windows app notification banners",
+      "description": "Turn off Windows app toast notifications so banners do not distract you during a session.",
+      "category": "windows",
+      "risk": "moderate",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\PushNotifications",
+          "name": "ToastEnabled",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "Applies outside games too. You may miss useful app messages; security controls remain enabled."
+    },
+    {
+      "id": "lockscreen-notifications",
+      "title": "Hide lock screen app notifications",
+      "description": "Prevent ordinary app notification banners from being displayed above the lock screen.",
+      "category": "windows",
+      "risk": "low",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Notifications\\Settings",
+          "name": "NOC_GLOBAL_SETTING_ALLOW_TOASTS_ABOVE_LOCK",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "A lock-screen privacy preference, with no direct FPS benefit."
+    },
+    {
+      "id": "start-suggestions",
+      "title": "Disable suggested apps in Start",
+      "description": "Turn off supported Start menu promotional app suggestions.",
+      "category": "windows",
+      "risk": "low",
+      "recommended": true,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+          "name": "SystemPaneSuggestionsEnabled",
+          "type": "DWord",
+          "value": 0
+        },
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+          "name": "SubscribedContent-338388Enabled",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "Does not uninstall apps. Newer Start recommendation features may use additional controls."
+    },
+    {
+      "id": "windows-tips",
+      "title": "Disable Windows tips and suggestions",
+      "description": "Stop supported Windows usage tips and soft-landing promotional suggestions.",
+      "category": "windows",
+      "risk": "low",
+      "recommended": true,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+          "name": "SoftLandingEnabled",
+          "type": "DWord",
+          "value": 0
+        },
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+          "name": "SubscribedContent-338389Enabled",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "Only controls Windows suggestions, not app notifications or security status."
+    },
+    {
+      "id": "settings-suggestions",
+      "title": "Disable Settings promotional suggestions",
+      "description": "Turn off the supported suggested-content feeds in the Settings application.",
+      "category": "windows",
+      "risk": "low",
+      "recommended": true,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+          "name": "SubscribedContent-338393Enabled",
+          "type": "DWord",
+          "value": 0
+        },
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+          "name": "SubscribedContent-353694Enabled",
+          "type": "DWord",
+          "value": 0
+        },
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+          "name": "SubscribedContent-353696Enabled",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "Windows builds may retire individual content feeds. No game performance gain is promised."
+    },
+    {
+      "id": "suggested-app-installs",
+      "title": "Disable silent suggested app promotions",
+      "description": "Opt out of supported Content Delivery Manager suggestions that silently provision promoted consumer apps.",
+      "category": "windows",
+      "risk": "low",
+      "recommended": true,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+          "name": "SilentInstalledAppsEnabled",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "Does not uninstall existing apps or prevent the Microsoft Store from updating them."
+    },
+    {
+      "id": "setup-reminders",
+      "title": "Disable finish-setting-up reminders",
+      "description": "Stop the supported post-install reminder to finish configuring optional Windows experiences.",
+      "category": "windows",
+      "risk": "low",
+      "recommended": true,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\UserProfileEngagement",
+          "name": "ScoobeSystemSettingEnabled",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "Does not disable Windows Update, activation or security checks."
+    },
+    {
+      "id": "welcome-experience",
+      "title": "Disable Windows welcome promotions",
+      "description": "Turn off the supported Windows welcome experience suggestions after updates and sign-in.",
+      "category": "windows",
+      "risk": "low",
+      "recommended": true,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+          "name": "SubscribedContent-310093Enabled",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "Affects welcome content only. Operating-system updates continue normally."
+    },
+    {
+      "id": "lockscreen-spotlight",
+      "title": "Disable lock screen Spotlight content",
+      "description": "Stop supported rotating Windows Spotlight content and overlay tips on the lock screen.",
+      "category": "windows",
+      "risk": "low",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+          "name": "RotatingLockScreenEnabled",
+          "type": "DWord",
+          "value": 0
+        },
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+          "name": "RotatingLockScreenOverlayEnabled",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "Changes the lock screen presentation; existing local images are not deleted."
+    },
+    {
+      "id": "explorer-promotions",
+      "title": "Disable Explorer provider suggestions",
+      "description": "Hide sync-provider promotional notifications shown inside File Explorer.",
+      "category": "windows",
+      "risk": "low",
+      "recommended": true,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+          "name": "ShowSyncProviderNotifications",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "Does not disable OneDrive, syncing, backups or Explorer security warnings."
+    },
+    {
+      "id": "windows-widgets",
+      "title": "Disable Windows 11 Widgets",
+      "description": "Disable the optional Windows Widgets board and its associated feed experience through the Windows policy.",
+      "category": "windows",
+      "risk": "moderate",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 22000,
+      "targets": [
+        {
+          "path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Dsh",
+          "name": "AllowNewsAndInterests",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "Windows 11 only. Removes the Widgets board, weather and related feed access. Sign out after applying."
+    },
+    {
+      "id": "news-interests",
+      "title": "Disable Windows 10 News and interests",
+      "description": "Disable the optional Windows 10 taskbar news and weather feed using its policy.",
+      "category": "windows",
+      "risk": "moderate",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19042,
+      "targets": [
+        {
+          "path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Feeds",
+          "name": "EnableFeeds",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "maxBuild": 21999,
+      "caveat": "Windows 10 only. This setting does not apply to the Windows 11 Widgets board."
+    },
+    {
+      "id": "frequent-folders",
+      "title": "Hide Explorer frequent folders",
+      "description": "Remove frequently used folders from the visible File Explorer Quick Access/Home list.",
+      "category": "windows",
+      "risk": "low",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer",
+          "name": "ShowFrequent",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "A navigation/privacy preference. Pinned folders remain and no files are removed."
+    },
+    {
+      "id": "explorer-cloud-files",
+      "title": "Disable Explorer cloud file recommendations",
+      "description": "Prevent account-based Microsoft 365 cloud items from being shown as recent items in supported File Explorer views.",
+      "category": "windows",
+      "risk": "low",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 22621,
+      "targets": [
+        {
+          "path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Explorer",
+          "name": "DisableGraphRecentItems",
+          "type": "DWord",
+          "value": 1
+        }
+      ],
+      "caveat": "Windows 11 22H2 or later. Does not disable cloud sync or delete cloud files."
+    },
+    {
+      "id": "restart-apps",
+      "title": "Stop reopening apps after sign-in",
+      "description": "Opt out of automatically saving and reopening supported restartable apps after a Windows restart.",
+      "category": "windows",
+      "risk": "low",
+      "recommended": true,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon",
+          "name": "RestartApps",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "Does not disable ordinary startup entries, security services or application auto-start settings."
+    },
+    {
+      "id": "edge-background",
+      "title": "Stop Edge background and startup boost",
+      "description": "Disable Edge startup boost and its background mode after its last window closes.",
+      "category": "windows",
+      "risk": "low",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Policies\\Microsoft\\Edge",
+          "name": "StartupBoostEnabled",
+          "type": "DWord",
+          "value": 0
+        },
+        {
+          "path": "HKCU:\\Software\\Policies\\Microsoft\\Edge",
+          "name": "BackgroundModeEnabled",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "requiresPath": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\msedge.exe",
+      "caveat": "Requires a detected machine-wide Edge installation. Restart Edge to apply. Browser launch may be slower and background extensions may stop."
+    },
+    {
+      "id": "chrome-background",
+      "title": "Stop Chrome background applications",
+      "description": "Prevent Chrome background apps from continuing after all Chrome windows close.",
+      "category": "windows",
+      "risk": "low",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Policies\\Google\\Chrome",
+          "name": "BackgroundModeEnabled",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "requiresPath": "HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\chrome.exe",
+      "caveat": "Requires a detected machine-wide Chrome installation. Restart Chrome to apply. Background extensions and app notifications may stop."
+    },
+    {
+      "id": "advertising-id",
+      "title": "Disable Windows advertising ID",
+      "description": "Stop supported apps from using the Windows advertising identifier for personalized ads.",
+      "category": "privacy",
+      "risk": "low",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo",
+          "name": "Enabled",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "A privacy choice, with no measurable game-performance gain assumed."
+    },
+    {
+      "id": "tailored-experiences",
+      "title": "Disable tailored diagnostic experiences",
+      "description": "Opt out of personalized recommendations that use Windows diagnostic data.",
+      "category": "privacy",
+      "risk": "low",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Privacy",
+          "name": "TailoredExperiencesWithDiagnosticDataEnabled",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "Does not disable security telemetry, diagnostics services or required diagnostic data."
+    },
+    {
+      "id": "clipboard-sync",
+      "title": "Disable cloud clipboard sync",
+      "description": "Prevent Windows clipboard contents from being synchronized across devices.",
+      "category": "privacy",
+      "risk": "low",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+          "name": "AllowCrossDeviceClipboard",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "Cross-device clipboard is unavailable. Local copy and paste continue working."
+    },
+    {
+      "id": "clipboard-history",
+      "title": "Disable clipboard history",
+      "description": "Stop Windows maintaining the optional Win+V clipboard history.",
+      "category": "privacy",
+      "risk": "low",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Clipboard",
+          "name": "EnableClipboardHistory",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "Win+V history becomes unavailable. This does not promise secure erasure of previously stored data."
+    },
+    {
+      "id": "cloud-search",
+      "title": "Disable account cloud search",
+      "description": "Stop Windows Search including supported personal Microsoft and work/school cloud-account content.",
+      "category": "privacy",
+      "risk": "low",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\SearchSettings",
+          "name": "IsMSACloudSearchEnabled",
+          "type": "DWord",
+          "value": 0
+        },
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\SearchSettings",
+          "name": "IsAADCloudSearchEnabled",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "Local indexed search is retained. Not a network-latency or game FPS setting."
+    },
+    {
+      "id": "search-history",
+      "title": "Disable device search history",
+      "description": "Turn off local Windows Search history used to improve search suggestions.",
+      "category": "privacy",
+      "risk": "low",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\SearchSettings",
+          "name": "IsDeviceSearchHistoryEnabled",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "Does not disable the Windows Search indexer or remove existing index data."
+    },
+    {
+      "id": "search-highlights",
+      "title": "Disable Search highlights",
+      "description": "Stop dynamic Search highlight content such as trending topics and illustrated suggestions.",
+      "category": "privacy",
+      "risk": "low",
+      "recommended": true,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19044,
+      "targets": [
+        {
+          "path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search",
+          "name": "EnableDynamicContentInWSB",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "Supported on Windows builds with Search highlights. Ordinary local search continues working."
+    },
+    {
+      "id": "search-web",
+      "title": "Disable search-box web suggestions",
+      "description": "Disable supported search-box web suggestions so Start/search is focused on local content.",
+      "category": "privacy",
+      "risk": "low",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Policies\\Microsoft\\Windows\\Explorer",
+          "name": "DisableSearchBoxSuggestions",
+          "type": "DWord",
+          "value": 1
+        }
+      ],
+      "caveat": "Windows editions and servicing updates can vary in how search policies are honored. Does not affect browser search."
+    },
+    {
+      "id": "app-launch-tracking",
+      "title": "Disable app launch tracking",
+      "description": "Stop Windows tracking app launches for Start and search personalization.",
+      "category": "privacy",
+      "risk": "low",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+          "name": "Start_TrackProgs",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "Frequently used app recommendations become less personalized. No direct FPS increase is expected."
+    },
+    {
+      "id": "recent-documents",
+      "title": "Disable recently opened item history",
+      "description": "Stop displaying recently opened items in supported Start, taskbar Jump Lists and Explorer recent views.",
+      "category": "privacy",
+      "risk": "low",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+          "name": "Start_TrackDocs",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "Recent item shortcuts become unavailable. Existing documents are not deleted."
+    },
+    {
+      "id": "background-store-apps",
+      "title": "Restrict Store app background activity",
+      "description": "Use the Windows app privacy policy to deny supported Store apps permission to run in the background.",
+      "category": "privacy",
+      "risk": "moderate",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\AppPrivacy",
+          "name": "LetAppsRunInBackground",
+          "type": "DWord",
+          "value": 2
+        }
+      ],
+      "caveat": "May stop background notifications, mail updates or app sync. Does not terminate desktop applications and does not affect all system apps."
+    },
+    {
+      "id": "input-personalization",
+      "title": "Disable inking and typing learning",
+      "description": "Restrict implicit Windows text and handwriting collection used for input personalization.",
+      "category": "privacy",
+      "risk": "low",
+      "recommended": false,
+      "restart": "signout",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKCU:\\Software\\Microsoft\\InputPersonalization",
+          "name": "RestrictImplicitTextCollection",
+          "type": "DWord",
+          "value": 1
+        },
+        {
+          "path": "HKCU:\\Software\\Microsoft\\InputPersonalization",
+          "name": "RestrictImplicitInkCollection",
+          "type": "DWord",
+          "value": 1
+        }
+      ],
+      "caveat": "May reduce personalized word or handwriting suggestions. Does not change game mouse input processing."
+    },
+    {
+      "id": "delivery-peers",
+      "title": "Disable peer-to-peer update sharing",
+      "description": "Set Delivery Optimization to HTTP-only mode, preventing optional peer-to-peer update uploads and downloads.",
+      "category": "network",
+      "risk": "low",
+      "recommended": true,
+      "restart": "reboot",
+      "kind": "registry",
+      "minBuild": 19041,
+      "targets": [
+        {
+          "path": "HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\DeliveryOptimization",
+          "name": "DODownloadMode",
+          "type": "DWord",
+          "value": 0
+        }
+      ],
+      "caveat": "Windows Update and Store downloads remain enabled. This is not a bandwidth cap and cannot guarantee lower game ping."
+    },
+    {
+      "id": "cpu-maximum",
+      "title": "Allow full CPU performance on AC",
+      "description": "Set the active power plan maximum processor state to 100% when plugged in, removing a Windows power-plan CPU cap.",
+      "category": "power",
+      "risk": "moderate",
+      "recommended": false,
+      "restart": "none",
+      "kind": "power",
+      "minBuild": 19041,
+      "targets": [],
+      "power": {
+        "subgroup": "54533251-82be-4824-96c1-47b60b740d00",
+        "setting": "bc5038f7-23e0-4960-96da-33abaf5935ec",
+        "ac": 100
+      },
+      "caveat": "Often already 100%. Can increase heat if an existing cap was intentional. Does not overclock or override firmware power limits."
+    },
+    {
+      "id": "cpu-idle",
+      "title": "Allow normal CPU idle on AC",
+      "description": "Set the active power plan minimum processor state to 5%, allowing the CPU to idle instead of holding an unnecessary minimum clock.",
+      "category": "power",
+      "risk": "low",
+      "recommended": false,
+      "restart": "none",
+      "kind": "power",
+      "minBuild": 19041,
+      "targets": [],
+      "power": {
+        "subgroup": "54533251-82be-4824-96c1-47b60b740d00",
+        "setting": "893dee8e-2bef-41e0-89c6-b55d0929964c",
+        "ac": 5
+      },
+      "caveat": "A thermal and efficiency preference, not a promise of more FPS. Actual behavior depends on Intel hardware power management."
+    },
+    {
+      "id": "cpu-performance-preference",
+      "title": "Prefer CPU performance on AC",
+      "description": "Set the processor energy-performance preference to performance on supported hardware, including compatible Intel Speed Shift systems.",
+      "category": "power",
+      "risk": "moderate",
+      "recommended": false,
+      "restart": "none",
+      "kind": "power",
+      "minBuild": 19041,
+      "targets": [],
+      "power": {
+        "subgroup": "54533251-82be-4824-96c1-47b60b740d00",
+        "setting": "36687f9e-e3a5-4dbf-b1dc-15eb381c6863",
+        "ac": 0
+      },
+      "caveat": "May increase power use, fan noise and temperature. Measure sustained frame times; thermal throttling can make results worse."
+    },
+    {
+      "id": "cpu-boost",
+      "title": "Allow aggressive CPU boost on AC",
+      "description": "Select aggressive processor boost mode in the active AC power plan, where supported by the CPU and firmware.",
+      "category": "power",
+      "risk": "moderate",
+      "recommended": false,
+      "restart": "none",
+      "kind": "power",
+      "minBuild": 19041,
+      "targets": [],
+      "power": {
+        "subgroup": "54533251-82be-4824-96c1-47b60b740d00",
+        "setting": "be337238-0d82-4146-a960-4f3749d470c7",
+        "ac": 2
+      },
+      "caveat": "Optional, not overclocking. Can increase heat and power. Firmware limits still apply; do not use to compensate for inadequate cooling."
+    },
+    {
+      "id": "usb-selective-suspend",
+      "title": "Disable USB selective suspend on AC",
+      "description": "Keep Windows from selectively suspending idle USB devices in the active AC power plan.",
+      "category": "power",
+      "risk": "moderate",
+      "recommended": false,
+      "restart": "none",
+      "kind": "power",
+      "minBuild": 19041,
+      "targets": [],
+      "power": {
+        "subgroup": "2a737441-1930-4402-8d77-b2bebba308a3",
+        "setting": "48e6b7a6-50f5-4782-a5d4-53bb8f07e226",
+        "ac": 0
+      },
+      "caveat": "Only consider for reproducible peripheral sleep/wake problems. Increases idle power and does not raise mouse polling rate or guarantee lower active input latency."
+    },
+    {
+      "id": "pcie-link-power",
+      "title": "Disable PCIe link idle savings on AC",
+      "description": "Turn off active power plan PCI Express Link State Power Management while plugged in.",
+      "category": "power",
+      "risk": "moderate",
+      "recommended": false,
+      "restart": "none",
+      "kind": "power",
+      "minBuild": 19041,
+      "targets": [],
+      "power": {
+        "subgroup": "501a4d13-42af-4429-9fd1-a8218c268e20",
+        "setting": "ee12f906-d277-404b-b6da-e5fa1a576df5",
+        "ac": 0
+      },
+      "caveat": "Optional for measured link wake-related issues. Can increase idle heat and power. It does not set RTX 3060 NVIDIA performance mode."
+    },
+    {
+      "id": "disk-idle",
+      "title": "Keep hard disks awake on AC",
+      "description": "Set the active plan hard-disk idle timeout to never while plugged in, avoiding HDD spin-up waits.",
+      "category": "power",
+      "risk": "moderate",
+      "recommended": false,
+      "restart": "none",
+      "kind": "power",
+      "minBuild": 19041,
+      "targets": [],
+      "power": {
+        "subgroup": "0012ee47-9041-4b5d-9b77-535fba8b1442",
+        "setting": "6738e2c4-e8a5-4a42-b16a-e040e769756e",
+        "ac": 0
+      },
+      "caveat": "Relevant to mechanical disks that actually spin down. No SSD or CS2 FPS gain is expected; HDD noise and power use can increase."
+    }
+  ],
+  "categories": [
+    {
+      "id": "gaming",
+      "label": "Gaming",
+      "description": "Game Mode, recording and Game Bar interruptions."
+    },
+    {
+      "id": "input",
+      "label": "Input",
+      "description": "Consistent pointer behavior and keyboard preferences."
+    },
+    {
+      "id": "graphics",
+      "label": "Visual effects",
+      "description": "Lighter desktop effects. These do not change NVIDIA game rendering."
+    },
+    {
+      "id": "network",
+      "label": "Network",
+      "description": "Limit optional background transfer activity without modifying the network stack."
+    },
+    {
+      "id": "windows",
+      "label": "Windows",
+      "description": "Reduce optional background activity, distractions and promotional content."
+    },
+    {
+      "id": "privacy",
+      "label": "Privacy",
+      "description": "Turn off optional personalization and history. No direct FPS gain is promised."
+    },
+    {
+      "id": "power",
+      "label": "Power",
+      "description": "Optional AC power settings. Measure performance, temperatures and stability."
+    }
+  ],
+  "profiles": [
+    {
+      "id": "balanced",
+      "name": "Clean baseline",
+      "description": "Conservative Game Mode, capture, pointer and Windows suggestion preferences. No power-plan or accessibility changes.",
+      "ids": [
+        "game-mode",
+        "game-capture",
+        "controller-gamebar",
+        "mouse-acceleration",
+        "mouse-trails",
+        "pointer-sonar",
+        "pointer-snap",
+        "transparency",
+        "window-animation",
+        "taskbar-animation",
+        "windows-tips",
+        "settings-suggestions",
+        "setup-reminders",
+        "explorer-promotions",
+        "restart-apps"
+      ]
+    },
+    {
+      "id": "cs2",
+      "name": "CS2 focus",
+      "description": "A measured starting point for the i5-14600 / RTX 3060 / 32 GB target: Game Mode, no Windows recording or pointer effects, fewer promotions and no peer update sharing. CS2 raw input is already separate from desktop acceleration.",
+      "ids": [
+        "game-mode",
+        "game-capture",
+        "controller-gamebar",
+        "mouse-acceleration",
+        "mouse-trails",
+        "pointer-sonar",
+        "pointer-snap",
+        "transparency",
+        "window-animation",
+        "taskbar-animation",
+        "start-suggestions",
+        "windows-tips",
+        "settings-suggestions",
+        "suggested-app-installs",
+        "setup-reminders",
+        "welcome-experience",
+        "explorer-promotions",
+        "restart-apps",
+        "search-highlights",
+        "delivery-peers"
+      ]
+    }
+  ]
+}
